@@ -1,62 +1,55 @@
-import type { MapDate, SortingDateProps } from '../types';
 import { eachDayOfInterval, compareAsc } from 'date-fns';
 import dayjs from 'dayjs';
+import type { ResultDate, SortingDateProps } from '../types';
 
-interface todayData {
-  type: string,
-  amount: number
-}
-
-const stringPeriod:string[] = [];
-
-interface dateObject {
-  type: string | number;
-  amount: number;
-}
+const stringRange: string[] = [];
 
 const streakHelper = {
-  getPeriod: (start: globalThis.Date | number, end: globalThis.Date | number) => {
-    return eachDayOfInterval({ start, end });
+  getRange: (start: globalThis.Date | number, end: globalThis.Date | number) =>
+    eachDayOfInterval({ start, end }),
+  changeFormatRange: (range: Date[]) =>
+    range.forEach((yyyymmdd) =>
+      stringRange.push(dayjs(yyyymmdd).format('YYYYMMDD'))
+    ),
+  changeFormatDate: (dates: SortingDateProps[]) => {
+    const map = new Map<string, ResultDate[]>();
+    dates.forEach((date) => {
+      const key = dayjs(date.date).format('YYYYMMDD');
+      const value: ResultDate = { type: date.type, amount: date.amount };
+      if (map.has(key)) map.get(key)?.push(value);
+      else map.set(key, [value]);
+    });
+    return map;
   },
-  makeStringPeriod: (period: Date[]) => {
-    for(let i of period)
-      stringPeriod.push(dayjs(i).format('YYYYMMDD'));
+  sortForDate: (date: SortingDateProps[]) => {
+    return date.sort((a, b) => compareAsc(a.date, b.date));
   },
-  sortData: (data: {date:Date, amount:number, type:string}[]) => {
-    return data.sort((a, b) => compareAsc(a.date, b.date));
+  sumAmountByType: (mapByDate: Map<string, ResultDate[]>) => {
+    const newMap = new Map<string, ResultDate[]>();
+    mapByDate.forEach((value, key) => {
+      newMap.set(key, []);
+      value.forEach((obj) => {
+        let summedUp = false;
+        newMap.get(key)?.forEach((compareObj) => {
+          if (obj.type === compareObj.type) {
+            compareObj.amount += obj.amount;
+            summedUp = true;
+          }
+        });
+        if (summedUp === false) {
+          newMap.get(key)?.push(obj);
+        }
+      });
+    });
+    return newMap;
   },
-  putPeriodData: (array:Map<string, todayData[]>) => {
-    const newArray = new Map<string, any[]>();
-
-    for(let i of stringPeriod) {
-      const value = array.has(i) ? array.get(i) : null;
-      newArray.set(i, [value]);
+  putRangeDate: (array: Map<string, ResultDate[]>) => {
+    const newArray = new Map<string, ResultDate[]>();
+    for (let i of stringRange) {
+      if (array.has(i)) newArray.set(i, array.get(i) as ResultDate[]);
+      else newArray.set(i, []);
     }
     return newArray;
-  },
-  sumAmountByType: (mapByDate: Map<string, Array<dateObject>>) => {
-    const newMap = new Map<string, Array<dateObject>>()
-
-    mapByDate.forEach((value, key, map) => {
-      newMap.set(key, [])
-
-      value.forEach((obj) => {
-        let summedUp = false
-
-        newMap.get(key)?.forEach((compareObj) => {
-          if(obj.type === compareObj.type) {
-            compareObj.amount += obj.amount
-            summedUp = true
-          } 
-        })
-
-        if(summedUp === false) {
-          newMap.get(key)?.push(obj)
-        }
-      })
-
-    })
-    return newMap
   },
 };
 

@@ -5,28 +5,60 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 var date_fns_1 = require("date-fns");
 var dayjs_1 = __importDefault(require("dayjs"));
-var stringPeriod = [];
+var stringRange = [];
 var streakHelper = {
-    getPeriod: function (start, end) {
+    getRange: function (start, end) {
         return (0, date_fns_1.eachDayOfInterval)({ start: start, end: end });
     },
-    makeStringPeriod: function (period) {
-        for (var _i = 0, period_1 = period; _i < period_1.length; _i++) {
-            var i = period_1[_i];
-            stringPeriod.push((0, dayjs_1.default)(i).format('YYYYMMDD'));
-        }
+    changeFormatRange: function (range) {
+        return range.forEach(function (yyyymmdd) {
+            return stringRange.push((0, dayjs_1.default)(yyyymmdd).format('YYYYMMDD'));
+        });
     },
-    sortData: function (data) {
-        return data.sort(function (a, b) { return (0, date_fns_1.compareAsc)(a.date, b.date); });
+    changeFormatDate: function (dates) {
+        var map = new Map();
+        dates.forEach(function (date) {
+            var _a;
+            var key = (0, dayjs_1.default)(date.date).format('YYYYMMDD');
+            var value = { type: date.type, amount: date.amount };
+            if (map.has(key))
+                (_a = map.get(key)) === null || _a === void 0 ? void 0 : _a.push(value);
+            else
+                map.set(key, [value]);
+        });
+        return map;
     },
-    3: function () { },
-    4: function () { },
-    putPeriodData: function (array) {
+    sortForDate: function (date) {
+        return date.sort(function (a, b) { return (0, date_fns_1.compareAsc)(a.date, b.date); });
+    },
+    sumAmountByType: function (mapByDate) {
+        var newMap = new Map();
+        mapByDate.forEach(function (value, key) {
+            newMap.set(key, []);
+            value.forEach(function (obj) {
+                var _a, _b;
+                var summedUp = false;
+                (_a = newMap.get(key)) === null || _a === void 0 ? void 0 : _a.forEach(function (compareObj) {
+                    if (obj.type === compareObj.type) {
+                        compareObj.amount += obj.amount;
+                        summedUp = true;
+                    }
+                });
+                if (summedUp === false) {
+                    (_b = newMap.get(key)) === null || _b === void 0 ? void 0 : _b.push(obj);
+                }
+            });
+        });
+        return newMap;
+    },
+    putRangeDate: function (array) {
         var newArray = new Map();
-        for (var _i = 0, stringPeriod_1 = stringPeriod; _i < stringPeriod_1.length; _i++) {
-            var i = stringPeriod_1[_i];
-            var value = array.has(i) ? array.get(i) : null;
-            newArray.set(i, [value]);
+        for (var _i = 0, stringRange_1 = stringRange; _i < stringRange_1.length; _i++) {
+            var i = stringRange_1[_i];
+            if (array.has(i))
+                newArray.set(i, array.get(i));
+            else
+                newArray.set(i, []);
         }
         return newArray;
     },

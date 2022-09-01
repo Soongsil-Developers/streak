@@ -4,7 +4,7 @@ export interface SortingDateProps {
   type: string;
 }
 
-export interface MapDate {
+export interface ResultDate {
   type: string;
   amount: number;
 }
