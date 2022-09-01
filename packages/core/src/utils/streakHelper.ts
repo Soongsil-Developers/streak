@@ -9,6 +9,11 @@ interface todayData {
 
 const stringPeriod:string[] = [];
 
+interface dateObject {
+  type: string | number;
+  amount: number;
+}
+
 const streakHelper = {
   getPeriod: (start: globalThis.Date | number, end: globalThis.Date | number) => {
     return eachDayOfInterval({ start, end });
@@ -20,7 +25,6 @@ const streakHelper = {
   sortData: (data: {date:Date, amount:number, type:string}[]) => {
     return data.sort((a, b) => compareAsc(a.date, b.date));
   },
-  3: () => {},
   putPeriodData: (array:Map<string, todayData[]>) => {
     const newArray = new Map<string, any[]>();
 
@@ -29,6 +33,30 @@ const streakHelper = {
       newArray.set(i, [value]);
     }
     return newArray;
+  },
+  sumAmountByType: (mapByDate: Map<string, Array<dateObject>>) => {
+    const newMap = new Map<string, Array<dateObject>>()
+
+    mapByDate.forEach((value, key, map) => {
+      newMap.set(key, [])
+
+      value.forEach((obj) => {
+        let summedUp = false
+
+        newMap.get(key)?.forEach((compareObj) => {
+          if(obj.type === compareObj.type) {
+            compareObj.amount += obj.amount
+            summedUp = true
+          } 
+        })
+
+        if(summedUp === false) {
+          newMap.get(key)?.push(obj)
+        }
+      })
+
+    })
+    return newMap
   },
 };
 
