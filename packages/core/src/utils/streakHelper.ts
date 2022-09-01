@@ -1,6 +1,13 @@
-import { eachDayOfInterval } from 'date-fns';
-import dayjs from 'dayjs';
 import type { MapDate, SortingDateProps } from '../types';
+import { eachDayOfInterval, compareAsc } from 'date-fns';
+import dayjs from 'dayjs';
+
+interface todayData {
+  type: string,
+  amount: number
+}
+
+const stringPeriod:string[] = [];
 
 interface dateObject {
   type: string | number;
@@ -8,19 +15,24 @@ interface dateObject {
 }
 
 const streakHelper = {
-  1: (start: globalThis.Date | number, end: globalThis.Date | number) => {
+  getPeriod: (start: globalThis.Date | number, end: globalThis.Date | number) => {
     return eachDayOfInterval({ start, end });
   },
-  2: () => {},
-  sortingDate: (dates: SortingDateProps[]) => {
-    const map = new Map<string, MapDate[]>();
-    dates.forEach((date) => {
-      const key = dayjs(date.date).format('YYYYMMDD');
-      const value: MapDate = { type: date.type, amount: date.amount };
-      if (map.has(key)) map.get(key)?.push(value);
-      else map.set(key, [value]);
-    });
-    return map;
+  makeStringPeriod: (period: Date[]) => {
+    for(let i of period)
+      stringPeriod.push(dayjs(i).format('YYYYMMDD'));
+  },
+  sortData: (data: {date:Date, amount:number, type:string}[]) => {
+    return data.sort((a, b) => compareAsc(a.date, b.date));
+  },
+  putPeriodData: (array:Map<string, todayData[]>) => {
+    const newArray = new Map<string, any[]>();
+
+    for(let i of stringPeriod) {
+      const value = array.has(i) ? array.get(i) : null;
+      newArray.set(i, [value]);
+    }
+    return newArray;
   },
   sumAmountByType: (mapByDate: Map<string, Array<dateObject>>) => {
     const newMap = new Map<string, Array<dateObject>>()
@@ -46,7 +58,6 @@ const streakHelper = {
     })
     return newMap
   },
-  5: () => {},
 };
 
 export default streakHelper;
