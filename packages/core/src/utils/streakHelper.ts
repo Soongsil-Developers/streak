@@ -1,5 +1,4 @@
-import { eachDayOfInterval, compareAsc } from 'date-fns';
-import dayjs from 'dayjs';
+import { eachDayOfInterval, compareAsc, format } from 'date-fns';
 import type { ResultDate, SortingDateProps } from '../types';
 
 const stringRange: string[] = [];
@@ -10,19 +9,19 @@ function getRange(start: Date | number, end: Date | number) {
 
 function changeFormatRange(range: Date[]) {
   range.forEach((yyyymmdd) =>
-      stringRange.push(dayjs(yyyymmdd).format('YYYYMMDD'))
+      stringRange.push(format(yyyymmdd, 'YYYYMMDD'))
   )
 }
 
 function changeFormatDate(dates: SortingDateProps[]) {
   const map = new Map<string, ResultDate[]>();
-    dates.forEach((date) => {
-      const key = dayjs(date.date).format('YYYYMMDD');
-      const value: ResultDate = { type: date.type, amount: date.amount };
-      if (map.has(key)) map.get(key)?.push(value);
-      else map.set(key, [value]);
-    });
-    return map;
+  dates.forEach((date) => {
+    const key = format(date.date, 'YYYYMMDD');
+    const value: ResultDate = { type: date.type, amount: date.amount };
+    if (map.has(key)) map.get(key)?.push(value);
+    else map.set(key, [value]);
+  });
+  return map;
 }
 
 function sortForDate(date: SortingDateProps[]) {
