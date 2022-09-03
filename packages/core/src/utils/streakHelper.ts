@@ -1,4 +1,4 @@
-import { eachDayOfInterval, compareAsc } from 'date-fns';
+import { eachDayOfInterval, compareAsc, format } from 'date-fns';
 import dayjs from 'dayjs';
 import type { ResultDate, SortingDateProps } from '../types';
 
@@ -9,7 +9,7 @@ const streakHelper = {
     eachDayOfInterval({ start, end }),
   changeFormatRange: (range: Date[]) =>
     range.forEach((yyyymmdd) =>
-      stringRange.push(dayjs(yyyymmdd).format('YYYYMMDD'))
+      stringRange.push(format(yyyymmdd, 'yyyyLLdd'))
     ),
   changeFormatDate: (dates: SortingDateProps[]) => {
     const map = new Map<string, ResultDate[]>();
