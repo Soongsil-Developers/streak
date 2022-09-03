@@ -4,7 +4,7 @@ import type { ResultDate, SortingDateProps } from '../types';
 const stringRange: string[] = [];
 
 const streakHelper = {
-  getRange: (start: globalThis.Date | number, end: globalThis.Date | number) =>
+  getRange: (start: Date | number, end: Date | number) =>
     eachDayOfInterval({ start, end }),
   changeFormatRange: (range: Date[]) =>
     range.forEach((yyyymmdd) =>
