@@ -7,9 +7,7 @@ const streakHelper = {
   getRange: (start: Date | number, end: Date | number) =>
     eachDayOfInterval({ start, end }),
   changeFormatRange: (range: Date[]) =>
-    range.forEach((yyyymmdd) =>
-      stringRange.push(dayjs(yyyymmdd).format('YYYYMMDD'))
-    ),
+    range.forEach((yyyymmdd) => stringRange.push(format(yyyymmdd, 'yyyyLLdd'))),
   changeFormatDate: (dates: SortingDateProps[]) => {
     const map = new Map<string, ResultDate[]>();
     dates.forEach((date) => {
