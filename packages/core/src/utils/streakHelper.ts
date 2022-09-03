@@ -1,5 +1,4 @@
 import { eachDayOfInterval, compareAsc, format } from 'date-fns';
-import dayjs from 'dayjs';
 import type { ResultDate, SortingDateProps } from '../types';
 
 const stringRange: string[] = [];
@@ -8,13 +7,12 @@ const streakHelper = {
   getRange: (start: Date | number, end: Date | number) =>
     eachDayOfInterval({ start, end }),
   changeFormatRange: (range: Date[]) =>
-    range.forEach((yyyymmdd) =>
-      stringRange.push(format(yyyymmdd, 'yyyyLLdd'))
-    ),
+    range.forEach((yyyymmdd) => stringRange.push(format(yyyymmdd, 'yyyyLLdd'))),
+
   changeFormatDate: (dates: SortingDateProps[]) => {
     const map = new Map<string, ResultDate[]>();
     dates.forEach((date) => {
-      const key = dayjs(date.date).format('YYYYMMDD');
+      const key = format(date.date, 'YYYYMMDD');
       const value: ResultDate = { type: date.type, amount: date.amount };
       if (map.has(key)) map.get(key)?.push(value);
       else map.set(key, [value]);
