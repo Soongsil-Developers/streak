@@ -4,7 +4,7 @@ import type { ResultDate, SortingDateProps } from '../types';
 const stringRange: string[] = [];
 
 function getRange(start: Date | number, end: Date | number) {
-  return eachDayOfInterval({ start, end })
+  changeFormatRange(eachDayOfInterval({ start, end }));
 }
 
 function changeFormatRange(range: Date[]) {
@@ -56,8 +56,7 @@ function putRangeDate(array: Map<string, ResultDate[]>) {
 }
 
 function createDate(start: Date | number, end: Date | number, Date: SortingDateProps[]) {
-  const range = getRange(start, end)
-  changeFormatRange(range)
+  getRange(start, end)
   const sortedData = sortForDate(Date)
   const mapData = changeFormatDate(sortedData)
 	const map = sumAmountByType(mapData)
