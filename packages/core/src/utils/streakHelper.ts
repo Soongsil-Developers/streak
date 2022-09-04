@@ -9,14 +9,14 @@ function getRange(start: Date | number, end: Date | number) {
 
 function changeFormatRange(range: Date[]) {
   range.forEach((yyyymmdd) =>
-      stringRange.push(format(yyyymmdd, 'YYYYMMDD'))
+      stringRange.push(format(yyyymmdd, 'yyyyMMdd'))
   )
 }
 
 function changeFormatDate(dates: SortingDateProps[]) {
   const map = new Map<string, ResultDate[]>();
   dates.forEach((date) => {
-    const key = format(date.date, 'YYYYMMDD');
+    const key = format(date.date, 'yyyyMMdd');
     const value: ResultDate = { type: date.type, amount: date.amount };
     if (map.has(key)) map.get(key)?.push(value);
     else map.set(key, [value]);
