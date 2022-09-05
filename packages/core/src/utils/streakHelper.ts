@@ -4,6 +4,7 @@ import type { ResultDate, SortingDateProps } from '../types';
 const stringRange: string[] = [];
 
 function getRange(start: Date | number, end: Date | number) {
+  if(start > end) throw new Error("시작일은 종료일보다 클 수 없습니다.");
   changeFormatRange(eachDayOfInterval({ start, end }));
 }
 
@@ -23,6 +24,7 @@ function changeFormatDate(dates: SortingDateProps[]) {
 }
 
 function sortForDate(date: SortingDateProps[]) {
+  if(!date.length) throw new Error("date 배열은 빈 배열일 수 없습니다.");
   return date.sort((a, b) => compareAsc(a.date, b.date));
 }
 
