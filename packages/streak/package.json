@@ -1,5 +1,28 @@
 {
   "name": "streak",
   "version": "1.0.0",
-  "license": "MIT"
+  "license": "MIT",
+  "description": "Easy Streak",
+  "keywords": [
+    "streak",
+    "react"
+  ],
+  "bugs": {
+    "url": "https://github.com/Soongsil-Developers/streak/issues"
+  },
+  "files": [
+    "src",
+    "dist"
+  ],
+  "scripts": {
+    "build": "rollup -c"
+  },
+  "devDependencies": {
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0"
+  },
+  "dependencies": {
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0"
+  }
 }
