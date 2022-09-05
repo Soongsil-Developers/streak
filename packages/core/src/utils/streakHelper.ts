@@ -8,9 +8,7 @@ function getRange(start: Date | number, end: Date | number) {
 }
 
 function changeFormatRange(range: Date[]) {
-  range.forEach((yyyymmdd) =>
-      stringRange.push(format(yyyymmdd, 'yyyyMMdd'))
-  )
+  range.forEach((yyyymmdd) => stringRange.push(format(yyyymmdd, 'yyyyMMdd')));
 }
 
 function changeFormatDate(dates: SortingDateProps[]) {
@@ -29,21 +27,21 @@ function sortForDate(date: SortingDateProps[]) {
 }
 
 function sumAmountByType(mapByDate: Map<string, ResultDate[]>) {
-    const newMap = new Map<string, ResultDate[]>();
-    mapByDate.forEach((value, key) => {
-      newMap.set(key, []);
-      value.forEach((obj) => {
-        let summedUp = false;
-        newMap.get(key)?.forEach((compareObj) => {
-          if (obj.type === compareObj.type) {
-            compareObj.amount += obj.amount;
-            summedUp = true;
-          }
-        });
-        if (summedUp === false) newMap.get(key)?.push(obj);
+  const newMap = new Map<string, ResultDate[]>();
+  mapByDate.forEach((value, key) => {
+    newMap.set(key, []);
+    value.forEach((obj) => {
+      let summedUp = false;
+      newMap.get(key)?.forEach((compareObj) => {
+        if (obj.type === compareObj.type) {
+          compareObj.amount += obj.amount;
+          summedUp = true;
+        }
       });
+      if (summedUp === false) newMap.get(key)?.push(obj);
     });
-    return newMap;
+  });
+  return newMap;
 }
 
 function putRangeDate(array: Map<string, ResultDate[]>) {
@@ -55,14 +53,18 @@ function putRangeDate(array: Map<string, ResultDate[]>) {
   return newArray;
 }
 
-function createDate(start: Date | number, end: Date | number, Date: SortingDateProps[]) {
-  getRange(start, end)
-  const sortedData = sortForDate(Date)
-  const mapData = changeFormatDate(sortedData)
-	const map = sumAmountByType(mapData)
-  const createdDate = putRangeDate(map)
+function createDate(
+  start: Date | number,
+  end: Date | number,
+  Date: SortingDateProps[]
+) {
+  getRange(start, end);
+  const sortedData = sortForDate(Date);
+  const mapData = changeFormatDate(sortedData);
+  const map = sumAmountByType(mapData);
+  const createdDate = putRangeDate(map);
 
-  return createdDate
+  return createdDate;
 }
 
 export default createDate;
