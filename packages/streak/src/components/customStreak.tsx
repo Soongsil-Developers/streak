@@ -1,4 +1,5 @@
 import React from 'react';
+import streakHelper from 'core';
 
 interface CustomStreakProps {
   range: {
@@ -24,19 +25,12 @@ const CustomStreak = ({ range, data, renderDay }: CustomStreakProps) => {
 
   if (!start || !end) throw new Error();
   if (!renderDay) throw new Error();
-  if (!data) throw new Error(); // 2번 함수에서 예외처리
-  if (start > end) throw new Error(); // 1번 함수에서 예외처리
-  // amount는 무조건 양수 예외처리
-
-  // const range = streakHelper.getRange(start, end);
-  // streakHelper.changeFormatRange(range);
-  // const sortedData = streakHelper.sortForDate(data);
-  // const mapData = streakHelper.changeFormatDate(sortedData);
-  // const map = streakHelper.sumAmountByType(data);
+  if (!data) throw new Error();
+  if (start > end) throw new Error();
 
   return (
     <>
-      {Object.values(streakHelper.putRangeDate(map)).map((date) =>
+      {Object.values(streakHelper.createDate(start, end, data)).map((date) =>
         renderDay(date)
       )}
     </>

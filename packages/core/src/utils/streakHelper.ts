@@ -4,14 +4,12 @@ import type { ResultDate, SortingDateProps } from '../types';
 const stringRange: string[] = [];
 
 function getRange(start: Date | number, end: Date | number) {
-  if(start > end) throw new Error("시작일은 종료일보다 클 수 없습니다.");
+  if (start > end) throw new Error('시작일은 종료일보다 클 수 없습니다.');
   changeFormatRange(eachDayOfInterval({ start, end }));
 }
 
 function changeFormatRange(range: Date[]) {
-  range.forEach((yyyymmdd) =>
-      stringRange.push(format(yyyymmdd, 'yyyyMMdd'))
-  )
+  range.forEach((yyyymmdd) => stringRange.push(format(yyyymmdd, 'yyyyMMdd')));
 }
 
 function changeFormatDate(dates: SortingDateProps[]) {
@@ -26,26 +24,26 @@ function changeFormatDate(dates: SortingDateProps[]) {
 }
 
 function sortForDate(date: SortingDateProps[]) {
-  if(!date.length) throw new Error("date 배열은 빈 배열일 수 없습니다.");
+  if (!date.length) throw new Error('date 배열은 빈 배열일 수 없습니다.');
   return date.sort((a, b) => compareAsc(a.date, b.date));
 }
 
 function sumAmountByType(mapByDate: Map<string, ResultDate[]>) {
-    const newMap = new Map<string, ResultDate[]>();
-    mapByDate.forEach((value, key) => {
-      newMap.set(key, []);
-      value.forEach((obj) => {
-        let summedUp = false;
-        newMap.get(key)?.forEach((compareObj) => {
-          if (obj.type === compareObj.type) {
-            compareObj.amount += obj.amount;
-            summedUp = true;
-          }
-        });
-        if (summedUp === false) newMap.get(key)?.push(obj);
+  const newMap = new Map<string, ResultDate[]>();
+  mapByDate.forEach((value, key) => {
+    newMap.set(key, []);
+    value.forEach((obj) => {
+      let summedUp = false;
+      newMap.get(key)?.forEach((compareObj) => {
+        if (obj.type === compareObj.type) {
+          compareObj.amount += obj.amount;
+          summedUp = true;
+        }
       });
+      if (summedUp === false) newMap.get(key)?.push(obj);
     });
-    return newMap;
+  });
+  return newMap;
 }
 
 function putRangeDate(array: Map<string, ResultDate[]>) {
@@ -57,14 +55,18 @@ function putRangeDate(array: Map<string, ResultDate[]>) {
   return newArray;
 }
 
-function createDate(start: Date | number, end: Date | number, Date: SortingDateProps[]) {
-  getRange(start, end)
-  const sortedData = sortForDate(Date)
-  const mapData = changeFormatDate(sortedData)
-	const map = sumAmountByType(mapData)
-  const createdDate = putRangeDate(map)
+const createDate = (
+  start: Date | number,
+  end: Date | number,
+  Date: SortingDateProps[]
+) => {
+  getRange(start, end);
+  const sortedData = sortForDate(Date);
+  const mapData = changeFormatDate(sortedData);
+  const map = sumAmountByType(mapData);
+  const createdDate = putRangeDate(map);
 
-  return createdDate
-}
+  return createdDate;
+};
 
 export default createDate;

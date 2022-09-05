@@ -1,1 +1,5 @@
-export { default as streakHelper } from './utils/streakHelper';
+import createDate from './utils/streakHelper';
+
+export default {
+  createDate,
+};
