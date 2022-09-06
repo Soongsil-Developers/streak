@@ -15,7 +15,10 @@
     "dist"
   ],
   "scripts": {
-    "build": "rollup -c"
+    "storybook": "start-storybook -p 6006 -s public",
+    "build:storybook": "build-storybook",
+    "build": "rollup -c",
+    "prepare:storybook": "export NODE_OPTIONS=--openssl-legacy-provider"
   },
   "devDependencies": {
     "@types/react": "^18.0.18",
