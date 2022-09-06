@@ -30,7 +30,11 @@ const config = {
     resolve({ extensions }),
     babel({ exclude: 'node_modules/**' }),
     commonjs({ include: 'node_modules/**' }),
-    typescript({ tsconfig: './tsconfig.json', clean: true }),
+    typescript({
+      tsconfig: './tsconfig.json',
+      clean: true,
+      useTsconfigDeclarationDir: true,
+    }),
     svgr(),
     image(),
     url(),
