@@ -54,7 +54,7 @@ const Grass: React.FC<Props> = ({ data }) => {
   };
 
   const clickDay = (e: React.MouseEvent<HTMLElement>) => {
-    if (e.target instanceof HTMLElement)
+    if (e.target instanceof Element)
       result.get(e.target.id)?.map((item) => console.log(item.type));
   };
 
