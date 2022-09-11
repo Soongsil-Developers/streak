@@ -1,7 +1,7 @@
 import React from 'react';
-import streakHelper from 'core';
+import createDate from '../../utils/core';
 
-interface CustomStreakProps {
+export interface CustomStreakProps {
   range: {
     start: Date;
     end: Date;
@@ -30,7 +30,7 @@ const CustomStreak = ({ range, data, renderDay }: CustomStreakProps) => {
 
   return (
     <>
-      {Object.values(streakHelper.createDate(start, end, data)).map((date) =>
+      {Object.values(createDate(start, end, data)).map((date) =>
         renderDay(date)
       )}
     </>
