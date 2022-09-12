@@ -50,7 +50,7 @@ const Grass: React.FC<Props> = ({ data }) => {
 
   const isMonthStart = (date: String) => {
     if (date.substring(date.length - 2) === '01') return true;
-    else return false;
+    return false;
   };
 
   const clickDay = (e: React.MouseEvent<HTMLElement>) => {
