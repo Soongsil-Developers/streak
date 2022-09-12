@@ -122,7 +122,7 @@ const Grass: React.FC<Props> = ({ data }) => {
 
       if(isMonthStart(el.date)) {
         textArr.push(
-          <text x={x} y={170} >
+          <text x={x} y={163} fontSize={14} >
             {getMonth(el.date.substring(
               el.date.length - 4,
               el.date.length - 2
