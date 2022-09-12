@@ -118,7 +118,7 @@ const Grass: React.FC<Props> = ({ data }) => {
             onClick: clickDay,
           }
         )
-      )
+      );
 
       if(isMonthStart(el.date)) {
         textArr.push(
@@ -129,17 +129,16 @@ const Grass: React.FC<Props> = ({ data }) => {
             ))}
           </text>
         )
-      }
+      };
 
       count += 1;
     })
 
     const svgArr: React.ReactNode = React.createElement('svg', { width: 2000, height: 200, background: "#fff" }, [...rectArr, ...textArr])
-    return svgArr
+    return svgArr;
   }
   
   const svgList = makeGrass();
-  console.log(svgList)
 
   return (
     <>
