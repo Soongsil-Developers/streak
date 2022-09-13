@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import createDate, { SortingDateProps, ResultDate } from '../../utils/core';
 
 export interface Props {
@@ -19,10 +19,8 @@ const Grass: React.FC<Props> = ({ data }) => {
     );
 
     result = createDate(start, end, data);
-    console.log(result);
 
     const array = Array.from(result, ([date, value]) => ({ date, value }));
-    console.log(array);
     return array;
   };
 
@@ -88,7 +86,7 @@ const Grass: React.FC<Props> = ({ data }) => {
     }
   };
 
-  const makeGrass = () => {
+  const createGrass = () => {
     const range = getStreakHelperResult();
     let rectArr: React.ReactNode[] = [];
     let textArr: React.ReactNode[] = [];
@@ -99,6 +97,17 @@ const Grass: React.FC<Props> = ({ data }) => {
     let count = 0; // 7일마다 다음 줄로 넘어가게 해주기 위한 변수
 
     range.forEach((el, index) => {
+      const fill = useMemo(() => {
+        return getGrassColor(el.value.length)
+      }, [el.value])
+
+      const monthString = useMemo(() => {
+        return getMonth(el.date.substring(
+          el.date.length - 4,
+          el.date.length - 2
+        ))
+      }, [el.date])
+       
       if(count % 7 === 0) {
         x += 20;
       }
@@ -110,7 +119,7 @@ const Grass: React.FC<Props> = ({ data }) => {
             width, height,
             x, y: y + (20 * (count % 7)),
             rx: 4, ry: 4,
-            fill: getGrassColor(el.value.length),
+            fill: fill,
             strokeWidth: 2.5,
             stroke: "#fff",
             key: index,
@@ -122,11 +131,8 @@ const Grass: React.FC<Props> = ({ data }) => {
 
       if(isMonthStart(el.date)) {
         textArr.push(
-          <text x={x} y={163} fontSize={14} >
-            {getMonth(el.date.substring(
-              el.date.length - 4,
-              el.date.length - 2
-            ))}
+          <text x={x} y={163} fontSize={14} key={el.date} >
+            {monthString}
           </text>
         )
       };
@@ -137,8 +143,6 @@ const Grass: React.FC<Props> = ({ data }) => {
     const svgArr: React.ReactNode = React.createElement('svg', { width: 2000, height: 200, background: "#fff" }, [...rectArr, ...textArr])
     return svgArr;
   }
-  
-  const svgList = makeGrass();
 
   return (
     <>
@@ -150,7 +154,7 @@ const Grass: React.FC<Props> = ({ data }) => {
           flexWrap: 'wrap',
         }}
       >
-      {svgList}
+      {createGrass()}
       </div>
     </>
   );
