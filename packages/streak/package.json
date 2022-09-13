@@ -1,5 +1,5 @@
 {
-  "name": "streak",
+  "name": "@ssu/streak",
   "version": "1.0.0",
   "license": "MIT",
   "description": "Easy Streak",
@@ -29,5 +29,9 @@
   "peerDependencies": {
     "react": "^18.2.0",
     "react-dom": "^18.2.0"
+  },
+  "publishConfig": {
+    "registry": "https://registry.npmjs.org/",
+    "access": "public"
   }
 }

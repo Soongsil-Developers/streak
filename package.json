@@ -1,4 +1,5 @@
 {
+  "name": "@ssu/streak-root",
   "private": true,
   "workspaces": [
     "packages/*"
