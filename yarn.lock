@@ -1495,7 +1495,7 @@
 
 "@soongsil/streak@file:/Users/parkjunseo/Desktop/project/스트릭/streak/packages/streak":
   "resolved" "file:packages/streak"
-  "version" "1.0.2"
+  "version" "1.0.3"
 
 "@storybook/addons@6.5.10":
   "integrity" "sha512-VD4tBCQ23PkSeDoxuHcKy0RfhIs3oMYjBacOZx7d0bvOzK9WjPyvE2ysDAh7r/ceqnwmWHAScIpE+I1RU7gl+g=="
