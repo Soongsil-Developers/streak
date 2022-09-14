@@ -12,8 +12,9 @@ export interface IProps {
   theme?: ButtonType;
 }
 
-const Button: React.FC<IProps> = ({ children, theme = ButtonType.DEFAULT }) => {
+export const Button: React.FC<IProps> = ({
+  children,
+  theme = ButtonType.DEFAULT,
+}) => {
   return <button>{children}</button>;
 };
-
-export default Button;

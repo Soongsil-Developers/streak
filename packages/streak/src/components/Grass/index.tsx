@@ -5,7 +5,7 @@ export interface Props {
   data: SortingDateProps[];
 }
 
-const Grass: React.FC<Props> = ({ data }) => {
+export const Grass: React.FC<Props> = ({ data }) => {
   let result = new Map<string, ResultDate[]>();
 
   const getStreakHelperResult = useMemo(() => {
@@ -47,7 +47,7 @@ const Grass: React.FC<Props> = ({ data }) => {
   };
 
   const getMonth = (month: String) => {
-    switch(month) {
+    switch (month) {
       case '01':
         return 'JAN';
       case '02':
@@ -73,7 +73,7 @@ const Grass: React.FC<Props> = ({ data }) => {
       case '12':
         return 'DEC';
     }
-  }
+  };
 
   const isMonthStart = (date: String) => {
     if (date.substring(date.length - 2) === '01') return true;
@@ -97,44 +97,47 @@ const Grass: React.FC<Props> = ({ data }) => {
     let count = 0; // 7일마다 다음 줄로 넘어가게 해주기 위한 변수
 
     range.forEach((el, index) => {
-      if(count % 7 === 0) {
+      if (count % 7 === 0) {
         x += 20;
       }
 
       rectArr.push(
-        React.createElement(
-          'rect',
-          { 
-            width, height,
-            x, y: y + (20 * (count % 7)),
-            rx: 4, ry: 4,
-            fill: getGrassColor(el.value.length),
-            strokeWidth: 2.5,
-            stroke: "#fff",
-            key: index,
-            id: el.date,
-            onClick: clickDay,
-          }
-        )
+        React.createElement('rect', {
+          width,
+          height,
+          x,
+          y: y + 20 * (count % 7),
+          rx: 4,
+          ry: 4,
+          fill: getGrassColor(el.value.length),
+          strokeWidth: 2.5,
+          stroke: '#fff',
+          key: index,
+          id: el.date,
+          onClick: clickDay,
+        })
       );
 
-      if(isMonthStart(el.date)) {
+      if (isMonthStart(el.date)) {
         textArr.push(
-          <text x={x} y={163} fontSize={14} key={el.date} >
-            {getMonth(el.date.substring(
-              el.date.length - 4,
-              el.date.length - 2
-            ))}
+          <text x={x} y={163} fontSize={14} key={el.date}>
+            {getMonth(
+              el.date.substring(el.date.length - 4, el.date.length - 2)
+            )}
           </text>
-        )
-      };
+        );
+      }
 
       count += 1;
-    })
+    });
 
-    const svgArr: React.ReactNode = React.createElement('svg', { width: 2000, height: 200, background: "#fff" }, [...rectArr, ...textArr])
+    const svgArr: React.ReactNode = React.createElement(
+      'svg',
+      { width: 2000, height: 200, background: '#fff' },
+      [...rectArr, ...textArr]
+    );
     return svgArr;
-  }
+  };
 
   return (
     <>
@@ -146,10 +149,8 @@ const Grass: React.FC<Props> = ({ data }) => {
           flexWrap: 'wrap',
         }}
       >
-      {createGrass()}
+        {createGrass()}
       </div>
     </>
   );
 };
-
-export default Grass;

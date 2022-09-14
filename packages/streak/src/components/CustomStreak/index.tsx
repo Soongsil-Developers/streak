@@ -20,7 +20,7 @@ export interface CustomStreakProps {
   }) => React.ReactNode;
 }
 
-const CustomStreak = ({ range, data, renderDay }: CustomStreakProps) => {
+export const CustomStreak = ({ range, data, renderDay }: CustomStreakProps) => {
   const { start, end } = range;
 
   if (!start || !end) throw new Error();
@@ -36,5 +36,3 @@ const CustomStreak = ({ range, data, renderDay }: CustomStreakProps) => {
     </>
   );
 };
-
-export default CustomStreak;

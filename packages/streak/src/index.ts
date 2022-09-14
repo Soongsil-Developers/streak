@@ -1,1 +1,2 @@
-export { default as CustomStreak } from './components/CustomStreak';
+export * from './components';
+export * from './utils';

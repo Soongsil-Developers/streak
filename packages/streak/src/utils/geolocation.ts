@@ -313,7 +313,7 @@ const iterateCoords = (targets: Coords[], myLocation: Coord) => {
  * @beta
  */
 
-const getSSUGeolocation = (latitude: number, longitude: number) => {
+export const getSSUGeolocation = (latitude: number, longitude: number) => {
   if (!latitude || !longitude) throw new Error('empty latitude or longitude');
 
   let ssu = iterateCoords(SSU, { latitude, longitude });
@@ -340,5 +340,3 @@ const getSSUGeolocation = (latitude: number, longitude: number) => {
 
   return { ssu, SSUBuilding };
 };
-
-export default getSSUGeolocation;
