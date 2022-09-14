@@ -1,6 +1,6 @@
 {
-  "name": "@ssu/streak",
-  "version": "1.0.0",
+  "name": "@soongsil/streak",
+  "version": "1.0.2",
   "license": "MIT",
   "description": "Easy Streak",
   "keywords": [
@@ -14,10 +14,13 @@
     "src",
     "dist"
   ],
+  "main": "./dist/index.js",
+  "module": "./dist/index.es.js",
+  "types": "./dist/types/index.d.ts",
   "scripts": {
     "storybook": "start-storybook -p 6006 -s public",
     "build:storybook": "build-storybook",
-    "build": "rollup -c",
+    "build": "tsc --emitDeclarationOnly & rollup -c",
     "prepare:storybook": "export NODE_OPTIONS=--openssl-legacy-provider"
   },
   "devDependencies": {
