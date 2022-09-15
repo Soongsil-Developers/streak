@@ -1,10 +1,16 @@
 # @soongsil/streak
 
-## 1.0.0 (2022-09-14)
+## 1.0.5
 
 ### Patch Changes
 
-- Added: Streak Custom component
+- docs: add README.md
+
+## 1.0.2 ~ 1.0.4
+
+### Patch Changes
+
+- ci(changesets): version packages
 
 ## 1.0.1
 
@@ -12,8 +18,8 @@
 
 - Added: Grass
 
-## 1.0.2 ~ 1.0.4
+## 1.0.0 (2022-09-14)
 
 ### Patch Changes
 
-- ci(changesets): version packages
+- Added: Streak Custom component
