@@ -13,6 +13,11 @@ export interface ResultDate {
 
 const stringRange: string[] = [];
 
+function changeStringToDate(date: Date | string) {
+  if (typeof date === 'string') return new Date(date);
+  return date;
+}
+
 function getRange(start: Date | number, end: Date | number) {
   if (start > end) throw new Error('시작일은 종료일보다 클 수 없습니다.');
   changeFormatRange(eachDayOfInterval({ start, end }));
@@ -25,7 +30,7 @@ function changeFormatRange(range: Date[]) {
 function changeFormatDate(dates: SortingDateProps[]) {
   const map = new Map<string, ResultDate[]>();
   dates.forEach((date) => {
-    const key = format(date.date, 'yyyyMMdd');
+    const key = format(changeStringToDate(date.date), 'yyyyMMdd');
     const value: ResultDate = { type: date.type, amount: date.amount };
     if (map.has(key)) map.get(key)?.push(value);
     else map.set(key, [value]);
