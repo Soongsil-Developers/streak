@@ -1,11 +1,40 @@
-import React, { useMemo } from 'react';
+import React, { useCallback, useMemo } from 'react';
 import createDate, { SortingDateProps, ResultDate } from '../../utils/core';
+import styled from '@emotion/styled';
+import { match } from '../../utils/misc';
+
+export interface OnClickDay {
+  day: string;
+  data: ResultDate[];
+}
 
 export interface Props {
   data: SortingDateProps[];
+  onClickDay?: (data: OnClickDay) => void;
 }
 
-export const Grass: React.FC<Props> = ({ data }) => {
+const month: { [key: string]: string } = {
+  '01': 'JAN',
+  '02': 'FEB',
+  '03': 'MAR',
+  '04': 'APR',
+  '05': 'MAY',
+  '06': 'JUN',
+  '07': 'JUL',
+  '08': 'AUG',
+  '09': 'SEP',
+  '10': 'OCT',
+  '11': 'NOV',
+  '12': 'DEC',
+};
+
+const GrassBase = styled.div`
+  width: 100%;
+  overflow-x: auto;
+  direction: rtl;
+`;
+
+export const Grass: React.FC<Props> = ({ data, onClickDay }) => {
   let result = new Map<string, ResultDate[]>();
 
   const getStreakHelperResult = useMemo(() => {
@@ -24,67 +53,25 @@ export const Grass: React.FC<Props> = ({ data }) => {
     return array;
   }, [data]);
 
-  const getGrassColor = (length: number) => {
-    switch (true) {
-      case length === 0:
-        return 'hsl(0, 0%, 80%)';
-
-      case length > 0 && length <= 2:
-        return 'hsl(0, 100%, 85%)';
-
-      case length > 2 && length <= 6:
-        return 'hsl(0, 100%, 75%)';
-
-      case length > 6 && length <= 15:
-        return 'hsl(0, 100%, 65%)';
-
-      case length > 15 && length <= 22:
-        return 'hsl(0, 100%, 50%)';
-
-      case length > 22:
-        return 'hsl(210, 100%, 70%)';
-    }
-  };
-
-  const getMonth = (month: String) => {
-    switch (month) {
-      case '01':
-        return 'JAN';
-      case '02':
-        return 'FEB';
-      case '03':
-        return 'MAR';
-      case '04':
-        return 'APR';
-      case '05':
-        return 'MAY';
-      case '06':
-        return 'JUN';
-      case '07':
-        return 'JUL';
-      case '08':
-        return 'AUG';
-      case '09':
-        return 'SEP';
-      case '10':
-        return 'OCT';
-      case '11':
-        return 'NOV';
-      case '12':
-        return 'DEC';
-    }
-  };
-
   const isMonthStart = (date: String) => {
     if (date.substring(date.length - 2) === '01') return true;
     return false;
   };
 
-  const clickDay = (e: React.MouseEvent<HTMLElement>) => {
-    if (e.target instanceof Element) {
-      result.get(e.target.id)?.map((item) => console.log(item.type));
-    }
-  };
+  const handleClickDay = useCallback(
+    (e: React.MouseEvent<HTMLElement>) => {
+      if (e.target instanceof Element) {
+        if (onClickDay) {
+          if (result.get(e.target.id))
+            onClickDay({
+              day: e.target.id,
+              data: result.get(e.target.id) || [],
+            });
+        }
+      }
+    },
+    [onClickDay, result]
+  );
 
   const createGrass = () => {
     const range = getStreakHelperResult;
@@ -94,7 +81,7 @@ export const Grass: React.FC<Props> = ({ data }) => {
     let y = 10;
     let width = 15;
     let height = 15;
-    let count = 0; // 7일마다 다음 줄로 넘어가게 해주기 위한 변수
+    let count = 0;
 
     range.forEach((el, index) => {
       if (count % 7 === 0) {
@@ -109,21 +96,44 @@ export const Grass: React.FC<Props> = ({ data }) => {
           y: y + 20 * (count % 7),
           rx: 4,
           ry: 4,
-          fill: getGrassColor(el.value.length),
+          fill: match<number, string>(el.value.length)
+            .on(
+              (x) => x === 0,
+              () => 'hsl(0, 0%, 80%)'
+            )
+            .on(
+              (x) => x > 0 && x <= 2,
+              () => 'hsl(0, 100%, 85%)'
+            )
+            .on(
+              (x) => x > 2 && x <= 6,
+              () => 'hsl(0, 100%, 75%)'
+            )
+            .on(
+              (x) => x > 6 && x <= 15,
+              () => 'hsl(0, 100%, 65%)'
+            )
+            .on(
+              (x) => x > 15 && x <= 22,
+              () => 'hsl(0, 100%, 50%)'
+            )
+            .otherwise(() => 'hsl(210, 100%, 70%)'),
           strokeWidth: 2.5,
           stroke: '#fff',
           key: index,
           id: el.date,
-          onClick: clickDay,
+          onClick: handleClickDay,
         })
       );
 
       if (isMonthStart(el.date)) {
         textArr.push(
           <text x={x} y={163} fontSize={14} key={el.date}>
-            {getMonth(
-              el.date.substring(el.date.length - 4, el.date.length - 2)
-            )}
+            {
+              month[
+                `${el.date.substring(el.date.length - 4, el.date.length - 2)}`
+              ]
+            }
           </text>
         );
       }
@@ -133,24 +143,18 @@ export const Grass: React.FC<Props> = ({ data }) => {
 
     const svgArr: React.ReactNode = React.createElement(
       'svg',
-      { width: 2000, height: 200, background: '#fff' },
+      {
+        viewBox: '0 0 1120 180',
+        display: 'block',
+        width: 1100,
+        height: 200,
+        background: '#fff',
+        margin: '0px auto',
+      },
       [...rectArr, ...textArr]
     );
     return svgArr;
   };
 
-  return (
-    <>
-      <div
-        style={{
-          height: '220px',
-          display: 'flex',
-          flexDirection: 'column',
-          flexWrap: 'wrap',
-        }}
-      >
-        {createGrass()}
-      </div>
-    </>
-  );
+  return <GrassBase>{createGrass()}</GrassBase>;
 };
