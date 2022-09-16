@@ -7,6 +7,8 @@ import url from '@rollup/plugin-url';
 import peerDepsExternal from 'rollup-plugin-peer-deps-external';
 import sourcemaps from 'rollup-plugin-sourcemaps';
 import babel from '@rollup/plugin-babel';
+import { visualizer } from 'rollup-plugin-visualizer';
+import postcss from 'rollup-plugin-postcss';
 
 const pkg = require('./package.json');
 
@@ -34,8 +36,12 @@ const config = {
     typescript({
       useTsconfigDeclarationDir: true,
     }),
+    postcss({
+      extensions: ['.css'],
+    }),
     svgr(),
     image(),
+    visualizer(),
     url(),
     peerDepsExternal(),
     sourcemaps(),
