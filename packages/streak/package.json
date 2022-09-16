@@ -21,10 +21,13 @@
     "storybook": "start-storybook -p 6006 -s public",
     "build:storybook": "build-storybook",
     "build": "tsc --emitDeclarationOnly & rollup -c",
-    "prepare:storybook": "export NODE_OPTIONS=--openssl-legacy-provider"
+    "prepare:storybook": "export NODE_OPTIONS=--openssl-legacy-provider",
+    "test-storybook": "test-storybook --stories-json",
+    "test": "jest --watch --env=jsdom"
   },
   "devDependencies": {
     "@types/react": "^18.0.18",
+    "chromatic": "^6.9.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0"
   },
@@ -43,5 +46,11 @@
   "publishConfig": {
     "registry": "https://registry.npmjs.org/",
     "access": "public"
+  },
+  "jest": {
+    "preset": "ts-jest",
+    "setupFilesAfterEnv": [
+      "@testing-library/jest-dom/extend-expect"
+    ]
   }
 }
