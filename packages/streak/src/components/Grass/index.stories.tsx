@@ -1,13 +1,17 @@
 import React from 'react';
-import { ComponentStory, ComponentMeta } from '@storybook/react';
 import { Grass } from './index';
+import { ComponentStory, ComponentMeta } from '@storybook/react';
+import { action } from '@storybook/addon-actions';
+import { runTest } from './storybookTest';
 
 export default {
   title: 'Grass Streak',
   component: Grass,
 } as ComponentMeta<typeof Grass>;
 
-const Template: ComponentStory<typeof Grass> = (args) => <Grass {...args} />;
+const Template: ComponentStory<typeof Grass> = (args) => (
+  <Grass onClickDay={action('clicked')} data={args.data} />
+);
 
 export const Default = Template.bind({});
 
@@ -23,3 +27,5 @@ Default.args = {
   ],
   onClickDay: (data) => console.log(data),
 };
+
+runTest(Default);
