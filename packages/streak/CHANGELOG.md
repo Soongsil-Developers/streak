@@ -1,5 +1,17 @@
 # @soongsil/streak
 
+## 1.0.9
+
+### Patch Changes
+
+- docs: update readme.md
+
+## 1.0.8
+
+### Patch Changes
+
+- added: options
+
 ## 1.0.7
 
 ### Patch Changes
