@@ -11,6 +11,11 @@ export interface OnClickDay {
 export interface Props {
   data: SortingDateProps[];
   onClickDay?: (data: OnClickDay) => void;
+  options?: {
+    color?: string;
+    gap?: number;
+    size?: number;
+  };
 }
 
 const month: { [key: string]: string } = {
@@ -34,7 +39,11 @@ const GrassBase = styled.div`
   direction: rtl;
 `;
 
-export const Grass: React.FC<Props> = ({ data, onClickDay }) => {
+export const Grass: React.FC<Props> = ({
+  data,
+  onClickDay,
+  options = { color: '#007950', gap: 2.5, size: 15 },
+}) => {
   let result = new Map<string, ResultDate[]>();
 
   const getStreakHelperResult = useMemo(() => {
@@ -79,8 +88,8 @@ export const Grass: React.FC<Props> = ({ data, onClickDay }) => {
     let textArr: React.ReactNode[] = [];
     let x = 10;
     let y = 10;
-    let width = 15;
-    let height = 15;
+    let width = options.size || 15;
+    let height = options.size || 15;
     let count = 0;
 
     range.forEach((el, index) => {
@@ -99,26 +108,32 @@ export const Grass: React.FC<Props> = ({ data, onClickDay }) => {
           fill: match<number, string>(el.value.length)
             .on(
               (x) => x === 0,
-              () => 'hsl(0, 0%, 80%)'
+              () => '#dddfe0'
+            )
+            .otherwise(() => options.color || ('#007950' as string)),
+          fillOpacity: match<number, string>(el.value.length)
+            .on(
+              (x) => x === 0,
+              () => '100%'
             )
             .on(
               (x) => x > 0 && x <= 2,
-              () => 'hsl(0, 100%, 85%)'
+              () => '25%'
             )
             .on(
               (x) => x > 2 && x <= 6,
-              () => 'hsl(0, 100%, 75%)'
+              () => '45%'
             )
             .on(
               (x) => x > 6 && x <= 15,
-              () => 'hsl(0, 100%, 65%)'
+              () => '70%'
             )
             .on(
               (x) => x > 15 && x <= 22,
-              () => 'hsl(0, 100%, 50%)'
+              () => '100%'
             )
             .otherwise(() => 'hsl(210, 100%, 70%)'),
-          strokeWidth: 2.5,
+          strokeWidth: options.gap || 2.5,
           stroke: '#fff',
           key: index,
           id: el.date,
